@@ -1,0 +1,13 @@
+Keys are always strings, enclosed in double quotes.
+
+
+Values can be strings, numbers, booleans, arrays, other objects, or null.
+
+Values are separated from keys by colons :.
+Items within an object (or array) are separated by commas ,
+
+
+read json from file and convert it into tokens.
+
+1)convert json object to string which is present in a file. - done.
+2) read the string and convert it into list of tokens
