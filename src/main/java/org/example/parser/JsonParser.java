@@ -19,6 +19,9 @@ public class JsonParser implements Parser<String, Map<String,Object>>{
     public Map<String, Object> parse(String source) throws ParseException {
 
         List<Token> tokens= tokenizer.tokenize(source);
+        for(Token token : tokens){
+            System.out.println(token.toString());
+        }
         return Map.of();
     }
 }

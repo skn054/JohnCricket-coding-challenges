@@ -53,6 +53,7 @@ public class Lexer {
           while(!isToken(source.substring(pos,indexPos))){
               indexPos++;
           }
+          pos = indexPos;
           return new Token(jsonTokens,source.substring(pos,indexPos));
     }
 

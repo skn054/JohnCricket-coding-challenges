@@ -25,8 +25,8 @@ public class Main {
             System.out.println(e.getMessage());
             return ;
         }
-        Lexer lexer = new Lexer(0, "");
-        JSONTokenizer jsonTokenizer = new JSONTokenizer(lexer);
+//        Lexer lexer = new Lexer(0, "");
+        JSONTokenizer jsonTokenizer = new JSONTokenizer();
         JsonParser jsonParser = new JsonParser(jsonTokenizer);
         try{
             Map<String,Object> parseResult= jsonParser.parse(jsonString);
