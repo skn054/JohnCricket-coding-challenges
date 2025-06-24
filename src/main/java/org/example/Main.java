@@ -30,6 +30,7 @@ public class Main {
         JsonParser jsonParser = new JsonParser(jsonTokenizer);
         try{
             Map<String,Object> parseResult= jsonParser.parse(jsonString);
+            System.out.println(parseResult);
         }catch (ParseException parseException){
             System.out.println(parseException.getMessage());
         }
