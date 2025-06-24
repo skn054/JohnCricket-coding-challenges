@@ -57,41 +57,42 @@ public class JSONTokenizer implements Tokenizer<String,List<Token>>{
                String res = getStringToken(source,pos);
                tokens.add(new Token(JSONTokens.TOKEN_STRING,res));
                int currLength = res.length();
-               pos=pos + currLength;
+               pos=pos + currLength + 2;
            }else if(Character.isWhitespace(currChar)){
                pos++;
            }else if(Character.isDigit(currChar)){
                 //check if token is a digit
-               String res = getDIgit(source,pos);
+               String res = getDigit(source,pos);
                tokens.add(new Token(JSONTokens.TOKEN_NUMBER,res));
                pos = pos + res.length();
            }else if(currChar == 't' || currChar =='f' || currChar == 'n'){
                // This is a literal (true, false, null). Needs a helper.
-               boolean res = source.substring(pos,pos+4).matches("true|false|null");
 
-               if(res){
-                   String subString = source.substring(pos,pos+4);
-                   if(subString.contentEquals("null")){
-                       tokens.add(new Token(JSONTokens.TOKEN_NULL,source.substring(pos,pos+4)));
-                   }else{
-                       tokens.add(new Token(JSONTokens.TOKEN_BOOLEAN,source.substring(pos,pos+4)));
-                   }
-
-
-               }else{
-                   throw new ParseException("Invalid Exception");
+               if (source.startsWith("true", pos)) {
+                   tokens.add(new Token(JSONTokens.TOKEN_BOOLEAN, "true"));
+                   pos += 4; // Advance by the length of "true"
                }
-               pos = pos + 4;
+               else if (source.startsWith("false", pos)) {
+                   tokens.add(new Token(JSONTokens.TOKEN_BOOLEAN, "false"));
+                   pos += 5; // Advance by the length of "false"
+               }
+               else if (source.startsWith("null", pos)) {
+                   tokens.add(new Token(JSONTokens.TOKEN_NULL, "null"));
+                   pos += 4; // Advance by the length of "null"
+               }else{
+                   throw new ParseException("Invalid Character..");
+               }
+
 
 
            }else{
                throw new ParseException("Inavlid character found at position" + pos);
            }
-//           pos++;
+
        }
 
           return tokens;
-//        return new Token(JSONTokens.TOKEN_NUMBER,"asss")
+
     }
 
     private String getStringToken(String source, int pos) {
@@ -104,16 +105,18 @@ public class JSONTokenizer implements Tokenizer<String,List<Token>>{
             if(currPos +1 < strLength && currChar == '\\' && source.charAt(currPos + 1)=='"'){ currPos=currPos + 2;};
         }
 
-        return source.substring(pos,currPos+1);
+        return source.substring(pos+1,currPos);
     }
-    private String getDIgit(String source,int pos){
+    private String getDigit(String source, int pos){
         int currPos = pos;
         int strLength = source.length();
-        while(currPos < strLength && source.charAt(currPos) - '0' >=0 &&source.charAt(currPos) - '0' <=9){
-            currPos++;
-            if(source.charAt(currPos)=='.'){
-                currPos++;
-            }
+        while(currPos < strLength ){
+           char c = source.charAt(currPos);
+           if(Character.isDigit(c) || c== '.'){
+               currPos++;
+           }else{
+               break;
+           }
         }
         return source.substring(pos,currPos);
     }
